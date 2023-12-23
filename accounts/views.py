@@ -4,7 +4,7 @@ from .models import Account
 from carts.views import _cart_id
 from carts.models import Cart,CartItem
 from django.contrib import messages
-from django.http import HttpResponse
+
 
 ### Login and Logout
 from django.contrib import auth
