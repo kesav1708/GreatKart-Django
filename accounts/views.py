@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect
-from .forms import RegistrationForm
-from .models import Account
+from .forms import RegistrationForm,UserForm,UserProfileForm
+from .models import Account,UserProfile
 from carts.views import _cart_id
 from carts.models import Cart,CartItem
 from django.contrib import messages
-
+from orders.models import Order,OrderProduct
 
 ### Login and Logout
 from django.contrib import auth
@@ -38,6 +38,16 @@ def register(request):
       user = Account.objects.create_user(first_name=first_name,last_name=last_name,email=email,username=username,password=password)
       user.phone_number = phone_number
       user.save()
+
+      
+
+
+      ## Creating User Profile for Each User Automatically
+      profile = UserProfile()
+      profile.user_id = user.id
+      profile.profile_picture = 'default/default-user.png'
+      profile.save()
+
 
       ## USER ACTIVATION EMAIL
       current_site=get_current_site(request)
@@ -195,7 +205,20 @@ def activate(request, uidb64, token):
 @login_required(login_url = 'login')
 
 def dashboard(request):
-  return render(request,'accounts/dashboard.html')
+
+  ## Getting Order purchased by user 
+  orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id,is_ordered=True)
+  orders_count = orders.count()
+
+  ## Getting User Profile to view the Profile picture
+  userprofile = UserProfile.objects.get(user_id=request.user.id)
+
+  context={
+    'orders_count' : orders_count,
+    'userprofile' : userprofile,
+  }
+
+  return render(request,'accounts/dashboard.html',context)
 
 
 def forgotpassword(request):
@@ -284,4 +307,99 @@ def resetpassword(request):
     
   else:
     return render(request,'accounts/resetpassword.html')
+  
 
+
+### It should be Accessed  only When You are Logged in.
+@login_required(login_url='login')  
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user,is_ordered=True).order_by('-created_at')
+    context={
+      'orders' : orders,
+    }
+    return render(request,'accounts/my_orders.html',context)
+
+
+
+
+### It should be Accessed  only When You are Logged in.
+@login_required(login_url='login')
+def edit_profile(request):
+  ## Getting UserProfile
+  userprofile = UserProfile.objects.get(user=request.user)
+  if request.method == 'POST':
+    ## UserForm and Instance is used because we want to update the existing one not to create new one
+    user_form = UserForm(request.POST,instance=request.user)
+    ## UserProfileForm  
+    profile_form = UserProfileForm(request.POST,request.FILES,instance=userprofile)
+    if user_form.is_valid() and profile_form.is_valid():
+      user_form.save()
+      profile_form.save()
+      messages.success(request,'Your Profile has been Updated.')
+      return redirect('edit_profile')
+  else:
+    ## To see the existing data in form
+    user_form = UserForm(instance=request.user)
+    profile_form = UserProfileForm(instance=userprofile)
+
+  context={
+    'user_form' : user_form,
+    'profile_form' : profile_form,
+    'userprofile' : userprofile,
+  }
+
+  return render(request,'accounts/edit_profile.html',context)
+
+
+
+### It should be Accessed  only When You are Logged in.
+@login_required(login_url='login')
+def change_password(request):
+  if request.method == 'POST':
+    ## Getting passwords from request
+    current_password=request.POST['current_password']
+    new_password=request.POST['new_password']
+    confirm_password=request.POST['confirm_password']
+
+    ## Getting User
+    user = Account.objects.get(username__exact=request.user.username)
+
+    ## Checking Password
+    if new_password == confirm_password:
+      success = user.check_password(current_password)
+
+      if success:
+        user.set_password(new_password)
+        user.save()
+        messages.success(request,'Password Updated Successfully.')
+        return redirect('change_password')
+      else:
+        messages.error(request,'Please Enter Valid Current Password.')
+        return redirect('change_password')
+      
+    else:
+      messages.error(request,'Password Does Not Match!')
+      return redirect('change_password')
+    
+
+  return render(request,'accounts/change_password.html')
+
+
+### It should be Accessed  only When You are Logged in.
+@login_required(login_url='login')
+def order_detail(request,order_id):
+  order_detail = OrderProduct.objects.filter(order__order_number=order_id)
+  order = Order.objects.get(order_number=order_id)
+
+  ## Getting subtotal
+  subtotal = 0
+  for i in order_detail:
+    subtotal += i.product_price * i.quantity
+
+  context={
+    'order_detail' : order_detail,
+    'order' : order,
+    'subtotal' : subtotal,
+  }
+  return render(request,'accounts/order_detail.html',context) 
+  

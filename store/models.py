@@ -49,10 +49,6 @@ class Product(models.Model):
 
   
 
-
-
-
-
 ## To handle the Colors and Sizes separately 
 class VariationManager(models.Manager):
   def colors(self):
@@ -96,8 +92,6 @@ class ReviewRating(models.Model):
 
   def __str__(self):
     return self.subject
-
-
 
 
   
