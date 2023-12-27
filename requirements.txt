@@ -1,7 +1,7 @@
 asgiref==3.7.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
-Django==5.0
+Django==4.1.7
 django-admin-honeypot-updated-2021==1.2.0
 django-ipware==6.0.3
 django-session-timeout==0.1.0
