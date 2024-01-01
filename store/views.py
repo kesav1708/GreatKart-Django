@@ -3,7 +3,7 @@ from .models import Product,ReviewRating
 from category.models import Category
 from carts.models import CartItem
 from carts.views import _cart_id
-from django.core.paginator import PageNotAnInteger,Paginator,EmptyPage
+from django.core.paginator import Paginator
 from django.db.models import Q
 
 from .forms import ReviewForm
@@ -18,8 +18,11 @@ def store(request,category_slug=None):
   products=None
   
   if category_slug != None:
+
+    ## Getting Products based on Category
     categories=Category.objects.get(slug=category_slug)
     products=Product.objects.filter(category=categories,is_available=True)
+
     ## Pagination
     paginator=Paginator(products,4)
     page=request.GET.get('page')
@@ -28,7 +31,11 @@ def store(request,category_slug=None):
     product_count=products.count()
 
   else:
+
+    ## Getting all Products
     products=Product.objects.all().filter(is_available=True).order_by('id')
+
+
     ## Pagination
     paginator=Paginator(products,3)
     page=request.GET.get('page')
@@ -45,11 +52,14 @@ def store(request,category_slug=None):
 
 
 def product_detail(request,category_slug,product_slug):
+
   ## Getting Product based on category
   try:
     single_product=Product.objects.get(category__slug=category_slug,slug=product_slug)
+    
     ## Check Whether Item is already in Cart or not
     in_cart=CartItem.objects.filter(cart__cart_id=_cart_id(request),product=single_product).exists()
+
   except Exception as error:
     raise error
   
