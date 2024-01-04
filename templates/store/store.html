@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% load static %} 
 {% block content %}
-<!-- ========================= SECTION PAGETOP ========================= -->
+
 <section class="section-pagetop bg">
   <div class="container">
 
@@ -12,12 +12,10 @@
     {% endif %}
 
   </div>
-  <!-- container //  -->
+
 </section>
 
-<!-- ========================= SECTION INTRO END// ========================= -->
 
-<!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
   <div class="container">
     <div class="row">
@@ -42,6 +40,7 @@
                   <li>
                     <a href="{% url 'store' %}">All Products</a>
                   </li>
+                  <!-- It is coming from category context Processors -->
                   {% for category in links %}
                   <li>
                     <a href="{{category.get_url}}"
@@ -51,16 +50,16 @@
                   {% endfor %}
                 </ul>
               </div>
-              <!-- card-body.// -->
+            
             </div>
           </article>
-          <!-- filter-group  .// -->
+        
          
 
         </div>
-        <!-- card.// -->
+   
       </aside>
-      <!-- col.// -->
+  
       <main class="col-md-9">
         <header class="border-bottom mb-4 pb-3">
           <div class="form-inline">
@@ -69,7 +68,7 @@
             >
           </div>
         </header>
-        <!-- sect-heading -->
+       
 
         <div class="row">
           {% if products %}
@@ -81,7 +80,7 @@
                   ><img src="{{ product.images.url }}"
                 /></a>
               </div>
-              <!-- img-wrap.// -->
+           
               <figcaption class="info-wrap">
                 <div class="fix-height">
                   <a href="{{product.get_url}}" class="title"
@@ -90,9 +89,9 @@
                   <div class="price-wrap mt-2">
                     <span class="price">${{product.price}}</span>
                   </div>
-                  <!-- price-wrap.// -->
+      
                 </div>
-
+                <!-- It is coming from store models -->
                 <a
                   href="{{ product.get_url }}"
                   class="btn btn-block btn-primary"
@@ -101,7 +100,7 @@
               </figcaption>
             </figure>
           </div>
-          <!-- col end.// -->
+     
           {% endfor %}
 
           {% else %}
@@ -110,7 +109,7 @@
           </div>
           {% endif %}
         </div>
-        <!-- row end.// -->
+  
 
         <nav class="mt-4" aria-label="Page navigation sample">
           {% if products.has_other_pages %}
@@ -140,7 +139,6 @@
                  <a class="page-link" href="?page={{i}}">{{i}}</a>
                 </li>
               {% endif %}
-
             {% endfor %}
 
             {% if products.has_next %}
@@ -153,11 +151,11 @@
           {% endif %}
         </nav>
       </main>
-      <!-- col.// -->
+
     </div>
   </div>
-  <!-- container .//  -->
+ 
 </section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
+
 
 {% endblock %}

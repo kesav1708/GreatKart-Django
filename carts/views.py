@@ -7,12 +7,15 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+## Getting Cart id from session key
 
 def _cart_id(request): ## private func
   cart=request.session.session_key ## get the session key
   if not cart:
     cart=request.session.create() ## creating the session key
   return cart
+
+
 
 def add_cart(request,product_id):
 
@@ -23,6 +26,7 @@ def add_cart(request,product_id):
 
   ## If User is Authenticated..
   if current_user.is_authenticated:
+
     ## Getting Product Variations List.
     product_variation=[]
 
@@ -42,6 +46,7 @@ def add_cart(request,product_id):
 
     ## Getting CartItem
     is_cart_item_exists=CartItem.objects.filter(product=product,user=current_user).exists()
+
     if is_cart_item_exists:
       cart_item=CartItem.objects.filter(product=product,user=current_user)
 
@@ -187,6 +192,7 @@ def remove_cart(request,product_id,cart_item_id):
     if cart_item.quantity > 1:
       cart_item.quantity -= 1
       cart_item.save()
+      
     else:
       cart_item.delete()
 

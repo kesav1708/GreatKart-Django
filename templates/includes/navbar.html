@@ -23,9 +23,9 @@
         <ul class="navbar-nav">
         <li><a href="#" class="nav-link"> <i class="fa fa-envelope"></i> Email </a></li>
         <li><a href="#" class="nav-link"> <i class="fa fa-phone"></i> Call us </a></li>
-      </ul> <!-- list-inline //  -->
-      </div> <!-- navbar-collapse .// -->
-    </div> <!-- container //  -->
+      </ul> 
+      </div> 
+    </div> 
     </nav>
 
   <section class="header-main border-bottom">
@@ -35,7 +35,7 @@
           <a href="{% url 'home' %}" class="brand-wrap">
             <img class="logo" src="{% static 'images/logo.png' %}" />
           </a>
-          <!-- brand-wrap.// -->
+          
         </div>
         <div class="col-lg col-sm col-md col-6 flex-grow-0">
           <div class="category-wrap dropdown d-inline-block float-right">
@@ -54,9 +54,9 @@
               {% endfor %}
             </div>
           </div>
-          <!-- category-wrap.// -->
+      
         </div>
-        <!-- col.// -->
+
         <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
         <div class="col-lg col-md-6 col-sm-12 col">
           <form action="{% url 'search' %}" class="search" method="GET">
@@ -76,9 +76,9 @@
               </div>
             </div>
           </form>
-          <!-- search-wrap .end// -->
+     
         </div>
-        <!-- col.// -->
+     
         <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
           <div class="d-flex justify-content-end mb-3 mb-lg-0">
             {% if user.id is None %}
@@ -105,18 +105,19 @@
               <div class="icon icon-sm rounded-circle border">
                 <i class="fa fa-shopping-cart"></i>
               </div>
+              <!-- Coming from carts context processors -->
               <span class="badge badge-pill badge-danger notify"
                 >{{cart_count}}</span
               >
             </a>
           </div>
-          <!-- widgets-wrap.// -->
+        
         </div>
-        <!-- col.// -->
+       
       </div>
-      <!-- row.// -->
+     
     </div>
-    <!-- container.// -->
+   
   </section>
-  <!-- header-main .// -->
+
 </header>

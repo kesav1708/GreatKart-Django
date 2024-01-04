@@ -2,7 +2,7 @@
 
 <section class="section-content padding-y bg">
   <div class="container">
-    <!-- ============================ COMPONENT 1 ================================= -->
+    
     {% if not cart_items %}
     <h2 class="text-center">Your Shopping Cart is Empty</h2>
     <br />
@@ -54,7 +54,7 @@
                   </figure>
                 </td>
                 <td>
-                  <!-- col.// -->
+                 
                   <div class="col">
                     <div class="input-group input-spinner">
                       <div class="input-group-prepend">
@@ -88,9 +88,9 @@
                       </form>
                       </div>
                     </div>
-                    <!-- input-group.// -->
+                   
                   </div>
-                  <!-- col.// -->
+                 
                 </td>
                 <td>
                   <div class="price-wrap">
@@ -99,13 +99,13 @@
                       ${{cart_item.product.price}} each
                     </small>
                   </div>
-                  <!-- price-wrap .// -->
+                  
                 </td>
                 <td class="text-right">
                   <a
                     href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"
                     class="btn btn-danger"
-                    onclick="return confirm('Are You Sure Want To Delete This Item')"
+                    onclick="return confirm('Are You Sure Want To Delete This Item?')"
                   >
                     Remove</a
                   >
@@ -115,9 +115,9 @@
             </tbody>
           </table>
         </div>
-        <!-- card.// -->
+        
       </aside>
-      <!-- col.// -->
+    
       <aside class="col-lg-3">
         <div class="card">
           <div class="card-body">
@@ -150,16 +150,16 @@
               >Continue Shopping</a
             >
           </div>
-          <!-- card-body.// -->
+         
         </div>
-        <!-- card.// -->
+        
       </aside>
-      <!-- col.// -->
+      
     </div>
     {% endif %}
-    <!-- row.// -->
-    <!-- ============================ COMPONENT 1 END .// ================================= -->
+    
+    
   </div>
-  <!-- container .//  -->
+  
 </section>
 {% endblock %}

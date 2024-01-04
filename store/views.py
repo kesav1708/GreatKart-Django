@@ -27,7 +27,9 @@ def store(request,category_slug=None):
     paginator=Paginator(products,4)
     page=request.GET.get('page')
     paged_products=paginator.get_page(page)
-    
+
+
+    ## Getting Count of the Products
     product_count=products.count()
 
   else:
@@ -41,6 +43,9 @@ def store(request,category_slug=None):
     page=request.GET.get('page')
     paged_products=paginator.get_page(page)
 
+
+
+    ## Getting Count of the Products
     product_count=products.count()
 
   context={
@@ -109,6 +114,7 @@ def search(request):
   return render(request,'store/store.html',context)
 
 def submit_review(request,product_id):
+  
   ## Getting  url
   url =request.META.get('HTTP_REFERER')
 
